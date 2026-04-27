@@ -1,4 +1,4 @@
-name: Java CI with Maven & JaCoCo
+name: Java CI with Maven
 
 on:
   push:
@@ -11,7 +11,7 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout code
+      - name: Checkout repository
         uses: actions/checkout@v4
 
       - name: Set up JDK 25
@@ -21,14 +21,5 @@ jobs:
           distribution: 'oracle'
           cache: 'maven'
 
-      - name: Build, Test and Check Coverage
-        # Dùng lệnh verify để kích hoạt luật check của JaCoCo
+      - name: Build and Test with Maven
         run: mvn clean verify
-
-      - name: Upload JaCoCo Coverage Report
-        uses: actions/upload-artifact@v4
-        # Sử dụng if: always() để đảm bảo report luôn được upload ngay cả khi build fail do coverage < 80%
-        if: always()
-        with:
-          name: jacoco-coverage-report
-          path: target/site/jacoco/
